@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BLAZED.COM — Recorded Version</title>
+<style>
+:root{
+  color-scheme:dark;
+  --red:#ff2020;
+  --red-bright:#ff4242;
+  --red-soft:#ff202026;
+  --black:#08090b;
+  --panel:#111214;
+  --raised:#17181a;
+  --line:#2a2b2e;
+  --muted:#818287;
+  --text:#e6e6e7;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  display:grid;place-items:center;margin:0;padding:16px;overflow:auto;
+  color:var(--text);font:12px/1.35 "Segoe UI",Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at 50% 45%,#35101044,transparent 48%),
+    linear-gradient(135deg,#090a0c,#050506 60%,#0c0809);
+}
+button,input,select{font:inherit;color:inherit}
+.menu{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;
+  width:min(820px,calc(100vw - 32px));height:min(670px,calc(100vh - 32px));
+  min-height:480px;overflow:hidden;border:1px solid #582020;border-radius:13px;
+  background:linear-gradient(145deg,#111214,#0d0e10 60%,#121112);
+  box-shadow:0 0 0 1px #ff202015,0 20px 65px #000d,0 0 34px #ff202019;
+}
+.menu::before{
+  content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;opacity:.2;
+  background:radial-gradient(ellipse at 12% 0%,#ff202024,transparent 35%);
+}
+.titlebar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  height:36px;flex:none;padding:0 13px;border-bottom:1px solid #292a2d;
+  background:linear-gradient(180deg,#18191b,#111214);
+  color:#e7e7e8;font-size:10px;font-weight:700;letter-spacing:.12em;
+}
+.titlebar strong{font-size:10px;font-weight:700}
+.titlebar .version{color:#77787d;font-size:9px;font-weight:500;letter-spacing:.08em}
+.window-dots{display:flex;gap:5px}
+.window-dots i{width:6px;height:6px;border-radius:50%;background:#46474a}
+.window-dots i:first-child{background:#b92323;box-shadow:0 0 8px #ff202044}
+.primary-tabs,.secondary-tabs{
+  display:flex;align-items:center;gap:5px;flex:none;padding:7px 9px;
+  border-bottom:1px solid #252629;background:#0c0d0f;
+}
+.primary-tabs{height:40px}
+.secondary-tabs{height:37px;padding-top:5px;padding-bottom:6px;background:#101113}
+.tab{
+  display:grid;place-items:center;flex:1;min-width:0;height:26px;padding:0 7px;
+  border:1px solid #303135;border-radius:5px;background:linear-gradient(#17181a,#111214);
+  color:#a9aaad;font-size:9px;font-weight:600;letter-spacing:.055em;white-space:nowrap;
+  box-shadow:0 1px 0 #ffffff05 inset;transition:color .15s,border-color .15s,background .15s,box-shadow .15s;
+}
+.secondary-tabs .tab{height:25px;font-size:8.5px;letter-spacing:.025em}
+.tab:hover{color:#fff;border-color:#702828;background:#201516}
+.tab.selected{
+  color:#fff;border-color:#a52323;
+  background:linear-gradient(180deg,#3a1112,#210d0e);
+  box-shadow:0 0 0 1px #ff202018 inset,0 0 13px #ff20201c;
+}
+.secondary-tabs .selected{border-color:#772525;background:#291112;color:#ff7777}
+.content{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:0;flex:1;padding:12px 12px 15px;overflow:auto}
+.column{min-width:0;padding:0 10px}
+.column+.column{border-left:1px solid #242528}
+.group{margin:0 0 11px;border:1px solid #292a2d;border-radius:7px;background:linear-gradient(145deg,#141517,#101113);overflow:hidden}
+.group-title{
+  display:flex;align-items:center;justify-content:space-between;min-height:27px;padding:0 9px;
+  border-bottom:1px solid #28292c;color:#b8b9bc;font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  background:linear-gradient(90deg,#1a1516,#141517 70%);
+}
+.group-title::after{content:"";width:23px;height:2px;border-radius:2px;background:var(--red);box-shadow:0 0 8px #ff202077}
+.rows{padding:3px 8px 6px}
+.check-row,.value-row,.slider-row,.select-row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:25px;
+  border-bottom:1px solid #202124;color:#c7c8ca;font-size:10px;
+}
+.check-row:last-child,.value-row:last-child,.slider-row:last-child,.select-row:last-child{border-bottom:0}
+.check-row span,.value-row span,.slider-row span,.select-row span{min-width:0}
+.check-row:hover,.value-row:hover,.select-row:hover{color:#fff}
+.fake-check{
+  display:grid;place-items:center;flex:none;width:13px;height:13px;border:1px solid #55565b;
+  border-radius:3px;background:#17181a;color:#fff;font-size:9px;line-height:1;
+}
+.fake-check.on{border-color:#e32626;background:linear-gradient(145deg,#ff3838,#c51010);box-shadow:0 0 8px #ff202033}
+.slider-row{display:block;padding:5px 0 6px}
+.slider-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.slider-head output{color:#d4d4d6;font:9px ui-monospace,Consolas,monospace}
+.track{height:5px;border:1px solid #292a2d;border-radius:99px;background:#202124;overflow:hidden}
+.track i{display:block;width:var(--value);height:100%;border-radius:inherit;background:linear-gradient(90deg,#b80f0f,#ff3434);box-shadow:0 0 9px #ff202066}
+.select-row{min-height:29px}
+.fake-select{
+  display:flex;align-items:center;justify-content:space-between;gap:9px;min-width:105px;height:21px;padding:0 7px;
+  border:1px solid #35363a;border-radius:4px;background:#17181a;color:#c8c9cb;font-size:9px;
+}
+.fake-select b{color:#9b9ca0;font-size:8px}
+.value{color:#d9d9db;font:9px ui-monospace,Consolas,monospace}
+.tag{padding:2px 6px;border:1px solid #493032;border-radius:4px;color:#e57979;background:#201416;font-size:8px;letter-spacing:.04em}
+.footer{
+  display:flex;align-items:center;gap:8px;flex:none;height:27px;padding:0 12px;
+  border-top:1px solid #292a2d;background:#0b0c0e;color:#77787d;font-size:9px;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:#ff3232;box-shadow:0 0 8px #ff202077}
+.footer .hint{margin-left:auto;color:#77787d}
+.footer kbd{padding:1px 4px;border:1px solid #36373a;border-radius:3px;color:#bbb;font:8px ui-monospace,Consolas,monospace}
+@media(max-width:560px){
+  body{padding:8px}
+  .menu{width:calc(100vw - 16px);height:calc(100vh - 16px);min-height:0;border-radius:10px}
+  .titlebar{height:33px;padding:0 9px;font-size:9px}
+  .primary-tabs,.secondary-tabs{gap:3px;padding-left:5px;padding-right:5px}
+  .primary-tabs{height:36px}.secondary-tabs{height:34px}
+  .tab{height:24px;padding:0 3px;font-size:7px;letter-spacing:.015em}
+  .secondary-tabs .tab{height:23px;font-size:6.8px}
+  .content{padding:8px 5px 10px}
+  .column{padding:0 5px}
+  .group{margin-bottom:7px}
+  .group-title{min-height:24px;padding:0 7px;font-size:8px}
+  .rows{padding:2px 6px 4px}
+  .check-row,.value-row,.select-row{min-height:23px;font-size:9px}
+  .slider-row{padding:4px 0 5px;font-size:9px}
+  .fake-select{min-width:80px}
+  .footer{height:25px;padding:0 8px;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="menu" aria-label="Static gaming menu mockup">
+  <header class="titlebar">
+    <strong>BLAZED.COM - RECORDED VERSION</strong>
+    <span class="version">VISUAL CONCEPT</span>
+    <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  </header>
+  <nav class="primary-tabs" aria-label="Primary sections">
+    <span class="tab selected">RAGEBOT</span><span class="tab">LEGITBOT</span><span class="tab">VISUALS</span>
+    <span class="tab">MISC</span><span class="tab">PLIST</span><span class="tab">CONFIGS</span>
+  </nav>
+  <nav class="secondary-tabs" aria-label="Ragebot sections">
+    <span class="tab selected">AIMBOT</span><span class="tab">ANTI-AIM</span><span class="tab">AUTO STUFF</span>
+    <span class="tab">RESOLVER</span><span class="tab">FAKE LAG</span><span class="tab">ADVANCED</span>
+  </nav>
+  <section class="content" aria-label="Fictional settings preview">
+    <div class="column">
+      <section class="group">
+        <h2 class="group-title">Target assistance</h2>
+        <div class="rows">
+          <div class="check-row"><span>Enable aim assist</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Automatic fire</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Visibility check</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Ignore teammates</span><i class="fake-check" aria-hidden="true"></i></div>
+          <div class="check-row"><span>Show target ring</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+        </div>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Accuracy profile</h2>
+        <div class="rows">
+          <div class="slider-row"><div class="slider-head"><span>Minimum accuracy</span><output>68%</output></div><div class="track"><i style="--value:68%"></i></div></div>
+          <div class="slider-row"><div class="slider-head"><span>Hit probability</span><output>42%</output></div><div class="track"><i style="--value:42%"></i></div></div>
+          <div class="slider-row"><div class="slider-head"><span>Target smoothing</span><output>24%</output></div><div class="track"><i style="--value:24%"></i></div></div>
+        </div>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Target zones</h2>
+        <div class="rows">
+          <div class="check-row"><span>Upper body</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Center mass</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Lower body</span><i class="fake-check" aria-hidden="true"></i></div>
+          <div class="select-row"><span>Priority</span><span class="fake-select">Balanced <b>⌄</b></span></div>
+        </div>
+      </section>
+    </div>
+    <div class="column">
+      <section class="group">
+        <h2 class="group-title">Assist options</h2>
+        <div class="rows">
+          <div class="check-row"><span>Accuracy boost</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Delay compensation</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Adaptive response</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+          <div class="check-row"><span>Recoil stabilization</span><i class="fake-check" aria-hidden="true"></i></div>
+          <div class="check-row"><span>Scope behavior</span><i class="fake-check on" aria-hidden="true">✓</i></div>
+        </div>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Response tuning</h2>
+        <div class="rows">
+          <div class="slider-row"><div class="slider-head"><span>Reaction window</span><output>115 ms</output></div><div class="track"><i style="--value:56%"></i></div></div>
+          <div class="slider-row"><div class="slider-head"><span>Tracking strength</span><output>72%</output></div><div class="track"><i style="--value:72%"></i></div></div>
+          <div class="select-row"><span>Response style</span><span class="fake-select">Smooth <b>⌄</b></span></div>
+          <div class="select-row"><span>Profile</span><span class="tag">CUSTOM</span></div>
+        </div>
+      </section>
+      <section class="group">
+        <h2 class="group-title">Preview state</h2>
+        <div class="rows">
+          <div class="value-row"><span>Interface mode</span><span class="value">DEMO</span></div>
+          <div class="value-row"><span>Current preset</span><span class="value">BLAZED RED</span></div>
+          <div class="value-row"><span>Control status</span><span class="tag">STATIC</span></div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <footer class="footer"><i class="status-dot" aria-hidden="true"></i><span>VISUAL MOCKUP</span><span class="hint"><kbd>HOME</kbd> menu <span aria-hidden="true">&nbsp;·&nbsp;</span> controls disabled</span></footer>
+</main>
+</body>
+</html>
